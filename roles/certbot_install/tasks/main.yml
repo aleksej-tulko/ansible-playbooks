@@ -1,0 +1,27 @@
+---
+- name: INSTALL CORE 
+  snap: 
+    name: core
+    state: present
+
+- name : INSTALL CERTBOT
+  snap: 
+    name: certbot
+    state: present
+    classic: yes
+
+- name: CONFIGURE CERTBOT
+  file:
+    src: /snap/bin/certbot
+    dest: /usr/bin/certbot
+    owner: root
+    state: link
+    force: yes
+
+- name: CREATE AND INSTALL CERTBOT WITH {{ certbot_plugin }} PLUGIN
+  command: 'certbot --"{{ certbot_plugin }}" -d  "{{ domain }}" --register-unsafely-without-email --non-interactive --agree-tos'
+
+- name: RELOAD NGINX
+  service:
+    name: nginx
+    state: reloaded

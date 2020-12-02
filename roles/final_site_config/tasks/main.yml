@@ -1,0 +1,15 @@
+---
+- set_fact: path_to_conf="{{ available }}/{{ domain }}"
+
+- set_fact: path_to_sym="{{ enabled }}/{{ domain }}"
+
+- name: REPLACE OLD TEMPLATE WITH THE NEW ONE
+  template:
+    src: default.conf
+    dest: "{{ available }}"
+
+- name: RENAME TEMPLATE
+  command: mv "{{ available }}"/default.conf "{{ path_to_conf }}"
+  notify:
+  - RELOAD NGINX
+

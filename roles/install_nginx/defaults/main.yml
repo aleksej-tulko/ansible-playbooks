@@ -1,0 +1,9 @@
+---
+add_key: curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
+instal_repo: deb http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx
+repo_directory: /etc/apt/sources.list.d/nginx.list
+packages:
+ - curl
+ - gnupg2
+ - ca-certificates
+ - lsb-release

@@ -1,0 +1,6 @@
+---
+snippets: /etc/nginx/snippets
+pool: /etc/php/7.3/fpm/pool.d
+create_dirs:
+  - "{{ snippets }}"
+  - "{{ pool }}"

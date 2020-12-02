@@ -1,0 +1,37 @@
+---
+- name: CHECK IF /ROOT/.my.cnf FILE EXISTS
+  stat: path=/etc/init.d/mysql
+  register: auth_file
+
+- block:
+  - name: INSTALL MYSQL
+    package:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+      force: yes
+    loop: "{{ packages }}"
+    notify:
+      - RESTART MYSQL
+
+  - name: CHANGE AUTH PLUGIN
+    shell: "{{ auth_change }}"
+
+  - name: FLUSH PRIVILEGES
+    shell: "{{ flush }}"
+
+  - name: ADD CONFIG FILE
+    template:
+      src: mysqld.cnf
+      dest: /etc/mysql/mysql.conf.d/
+      owner: mysql
+      group: mysql
+      mode: 0644 
+    notify:
+      - RESTART MYSQL
+  when: not auth_file.stat.exists
+
+- debug:
+    msg: "MYSQL IS ALREADY INSTALLED, ABORTING"
+  when: auth_file.stat.exists
+

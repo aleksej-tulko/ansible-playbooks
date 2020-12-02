@@ -1,0 +1,45 @@
+---
+- debug:
+    msg: "WITH THIS PLAYBOOK WE CREATE A ROOT PASSWORD AND SAVE IT TO /ROOT/.MY.CNF. THE ROOT PASSWORD WON'T BE RESET IF /ROOT/.MY.CNF FILE ALREADY EXISTS. \nIN ADDITION, NEW WORDPRESS SCHEME AND USER ARE CREATED FOR THE NEW WEBSITE. OLD WORDPRESS SCHEMES AND USERS REMAIN UNTOUCHED."
+
+- name: CHECK IF /ROOT/.my.cnf FILE EXISTS
+  stat: path=/root/.my.cnf
+  register: auth_file
+
+- block:
+  - name: CREATE PASSWORD FOR ROOT
+    mysql_user:
+      login_user: root
+      login_host: localhost
+      login_password: ""
+      name: root
+      password: "{{ root_password }}"
+      host: localhost
+      priv: "*.*:ALL,GRANT"
+      state: present
+
+  - name: ADD .my.cnf FILE
+    template:
+      src: .my.cnf
+      dest: /root
+      owner: root
+      group: root
+      mode: 0644
+  when: not auth_file.stat.exists
+
+- debug: 
+    msg: "THE ROOT PASSWORD HAS BEEN ALREADY SET UP, ABORTING"
+  when: auth_file.stat.exists
+
+- name: CREATE SCHEME FOR WP
+  mysql_db:
+    name: "{{ wp_scheme_name }}"
+    state: present
+
+- name: CREATE WP USER
+  mysql_user:
+    name: "{{ wp_user_name }}"
+    password: "{{ wp_user_password }}"
+    host: "%"
+    priv: "{{ wp_scheme_name }}.*:ALL"
+    state: present

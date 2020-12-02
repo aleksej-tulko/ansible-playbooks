@@ -1,0 +1,30 @@
+---
+- name: CHECK IF PHP IS ALREADY INSTALLED (SKIPPING IF IT IS INSTALLED)
+  stat: path=/etc/php/7.3/
+  register: php_dir
+
+- block:
+  - name: INSTALL SOFTWARE PROPERTIES
+    apt:
+      name: "{{ properties }}"
+      state: present
+
+  - name: ADD REPOSITORY
+    apt_repository:
+      repo: "{{ instal_repo }}"
+      state: present
+
+  - name: INSTALL PHP-FPM
+    package:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+      force: yes
+    loop: "{{ packages }}"
+    notify:
+      - RESTART PHP
+  when: not php_dir.stat.exists
+
+- debug:
+    msg: "PHP-FPM IS ALREADY INSTALLED, ABORTING"
+  when: php_dir.stat.exists
