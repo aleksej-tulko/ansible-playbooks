@@ -1,9 +1,0 @@
----
-service: nginx
-available: /etc/nginx/sites-available
-enabled: /etc/nginx/sites-enabled
-domains: /opt/domains/{{ domain }}
-create_dirs:
-  - "{{ available }}"
-  - "{{ domains }}"
-  - "{{ enabled }}"

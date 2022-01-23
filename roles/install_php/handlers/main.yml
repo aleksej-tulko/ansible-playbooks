@@ -1,5 +1,0 @@
----
-- name: RESTART PHP
-  service:
-    name: "{{ service }}"
-    state: restarted

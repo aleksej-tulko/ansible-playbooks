@@ -1,6 +1,0 @@
----
-- name: RELOAD NGINX
-  service:
-    name: "{{ service }}"
-    state: reloaded
-

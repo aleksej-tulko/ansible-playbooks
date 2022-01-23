@@ -1,5 +1,0 @@
----
-- name: RESTART MYSQL
-  service:
-    name: "{{ service }}"
-    state: restarted
