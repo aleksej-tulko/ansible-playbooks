@@ -25,3 +25,21 @@
         - curl
         - software-properties-common
         - docker-ce
+
+    - name: Copy config.json
+      copy:
+        src: ../files/config.json
+        dest: /root/.docker/config.json
+        owner: root
+        mode: 0600
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Log into private registry and force re-authorization
+      docker_login:
+        registry: nexus.mm.moneyman.ru
+        username: mm.dev
+        password: "{{ lookup('file', '../files/config.json')}}"
+        debug: true
