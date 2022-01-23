@@ -42,4 +42,3 @@
         registry: nexus.mm.moneyman.ru
         username: mm.dev
         password: "{{ lookup('file', '../files/config.json')}}"
-        debug: true
