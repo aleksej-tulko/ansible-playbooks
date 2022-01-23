@@ -1,0 +1,8 @@
+[webservers]
+vagrant1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22021
+vagrant2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22022
+vagrant3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22023
+vagrant4 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22024
+
+[docker-node]
+docker ansible_ssh_host=127.0.0.1 ansible_ssh_port=2226
