@@ -1,0 +1,10 @@
+{
+  "auths": {
+    "nexus.mm.moneyman.ru": {
+      "auth": "bW0uZGV2OmNuIXRbVVI7b091cCtSUA=="
+    },
+    "registry-latam.idfinance.com": {
+      "auth": "bW0uZGV2OmNuIXRbVVI7b091cCtSUA=="
+    }
+  }
+}
