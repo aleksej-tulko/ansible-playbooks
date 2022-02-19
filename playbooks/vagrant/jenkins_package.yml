@@ -1,5 +1,5 @@
 ---
-- hosts: aws
+- hosts: aws_test
   become: true
   roles:
     roles/install_docker
