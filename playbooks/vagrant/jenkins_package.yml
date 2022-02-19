@@ -1,6 +1,8 @@
 ---
 - hosts: aws_test
   become: true
+  vars_files:
+    - roles/install_jenkins/defaults/vars.yml
   roles:
-    roles/install_docker
-    roles/install_jenkins
+    - install_docker
+    - install_jenkins
