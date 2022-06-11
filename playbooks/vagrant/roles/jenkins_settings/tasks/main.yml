@@ -1,0 +1,50 @@
+- name: Create git directoty
+  file:
+    path: /home/aleksej.tulko/git
+    state: directory
+    owner: aleksej.tulko
+    group: aleksej.tulko
+    mode: 0744
+
+- name: Checkout
+  git:
+    repo: 'https://github.com/aleksej-tulko-idf/percona-server.git'
+    dest: /home/aleksej.tulko/git/
+    clone: yes
+    update: yes
+    accept_hostkey: yes
+  become_user: aleksej.tulko
+
+- name: Unzip settings in container
+#  shell:
+#    tar xfv /home/aleksej.tulko/git/archive/jenkins.tar.gz -C /home/aleksej.tulko/git/archive/ && chown vagrant:vagrant /home/aleksej.tulko/git/archive/var -R
+  unarchive:
+    src: /home/aleksej.tulko/git/archive/jenkins.tar.gz
+    dest: /home/aleksej.tulko/git/archive/
+    remote_src: yes
+    owner: vagrant
+    group: vagrant
+    mode: 0755
+
+- name: Copy settings
+  copy:
+    src: "{{ jenkins_backups_store }}"
+    dest: /jenkins_data
+    remote_src: yes
+    directory_mode: yes
+  notify:
+    - Change owner for Jenkins data directory
+    - Restart Jenkins container
+
+- name: Pause for 2 minutes
+  pause:
+    minutes: 2
+
+- name: Download jenkins-cli
+  get_url:
+    url: http://192.168.77.77:8080/jnlpJars/jenkins-cli.jar
+    dest: /usr/bin/jenkins-cli.jar
+    mode: '0755'
+    timeout: 30
+  notify:
+    - Restart Jenkins service

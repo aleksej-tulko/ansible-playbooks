@@ -21,6 +21,7 @@
     - software-properties-common
     - docker-ce
     - python3-pip
+    - openjdk-8-jdk
 
 - name: create directory for tokens
   file:

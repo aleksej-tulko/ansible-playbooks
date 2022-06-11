@@ -9,27 +9,33 @@
     source: pull
   register: result
 
-- name: Create volumes
-  docker_container:
-    image: "{{ container_image }}"
-    name: jenkins-data
+- name: Mount dir
+  file:
+    path: /jenkins_data
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0744
 
 - name: Create container
   docker_container:
     image: "{{ container_image }}"
     name: jenkins
-    volumes_from: jenkins-data
+#    volumes_from: jenkins-data
     state: started
     restart: yes
     ports:
       - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /jenkins_data:/var/jenkins_home
 
-- name: Save token to variable
-  shell: docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
-  register: result
+#- name: Save token to variable
+#  shell: docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+#  register: result
 
-- name: Get token
-  debug:
-    var: result.stdout
+#- name: Get token
+#  debug:
+#    var: result.stdout
 
 

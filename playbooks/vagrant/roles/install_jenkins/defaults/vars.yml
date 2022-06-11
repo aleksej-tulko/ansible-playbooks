@@ -1,3 +1,6 @@
-username: 8681463
-password: ZAQwsx12345
-container_image: 8681463/jenkins:tulko
+username: '8681463'
+password: 'ZAQwsx12345'
+container_image: '8681463/jenkins2.282:20220504'
+jenkins_data: '/jenkins_data'
+jenkins_archive: '/home/aleksej.tulko/git/archive/jenkins.tar.gz'
+jenkins_backups_store: '/home/aleksej.tulko/git/archive/var/jenkins_home/workspace/Backup_jenkins_pipeline@2/backup/'

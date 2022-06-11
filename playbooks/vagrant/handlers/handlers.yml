@@ -1,0 +1,20 @@
+- name: Change owner for Jenkins data directory
+  file:
+    path: /jenkins_data
+    owner: vagrant
+    group: vagrant
+    mode: 0755
+    recurse: yes
+
+- name: Restart Jenkins container
+  docker_container:
+    name: jenkins
+    restart: yes
+
+- name: Restart Jenkins service
+  shell:
+    sleep 60 && /usr/bin/java -jar /usr/bin/jenkins-cli.jar -s http://192.168.77.77:8080/ -auth aleksej_tulko:ZAQwsx12345 restart
+
+- name: Pause for 2 minutes
+  pause:
+    minutes: 2
